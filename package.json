@@ -1,5 +1,5 @@
 {
-  "name": "use-font-face-observer",
+  "name": "@sorare/use-font-face-observer",
   "description": "React hook to detect if web fonts are available 🪝",
   "version": "1.2.1",
   "license": "MIT",

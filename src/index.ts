@@ -46,12 +46,14 @@ export interface Config {
   showErrors: boolean
 }
 
+export type Status = `initial` | `inactive` | `active`
+
 function useFontFaceObserver(
   fontFaces: FontFace[] = [],
   { testString, timeout }: Options = {},
   { showErrors }: Config = { showErrors: false }
-): boolean {
-  const [isResolved, setIsResolved] = useState(false)
+): Status {
+  const [status, setStatus] = useState<Status>(`initial`)
   const fontFacesString = JSON.stringify(fontFaces)
 
   useEffect(() => {
@@ -65,8 +67,9 @@ function useFontFaceObserver(
     )
 
     Promise.all(promises)
-      .then(() => setIsResolved(true))
+      .then(() => setStatus(`active`))
       .catch(() => {
+        setStatus(`inactive`)
         if (showErrors) {
           // eslint-disable-next-line no-console
           console.error(`An error occurred during font loading`)
@@ -74,7 +77,7 @@ function useFontFaceObserver(
       })
   }, [fontFacesString, testString, timeout, showErrors])
 
-  return isResolved
+  return status
 }
 
 export default useFontFaceObserver
